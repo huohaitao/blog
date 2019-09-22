@@ -66,7 +66,7 @@ $(function(){
 		});
 	}
 	
-	functio init(){
+	function init(){
 		initQueue();
 		bindDraggable();
 	}
