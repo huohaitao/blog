@@ -1,35 +1,45 @@
 $(function(){
 	var items = $('div.item');
 	var info;
-	var queue = [];
+	var orderq;
 	
 	function initQueue(){
-		queue.length=0;
+		var queue = [];
 		items.each(function(i,v){
 			queue.push($(this).attr('uid'));
 		});
+		
+		function moveTo(a, pos){
+			var cpos = queue.indexOf(a);
+			var beforePos = cpos > pos;
+			if(beforePos){
+				for(var i=cpos; i>pos; i--){
+					queue[i] = queue[i-1];
+				}
+			}else{
+				for(var i=cpos; i < pos; i++){
+					queue[i] = queue[i+1];
+				}
+			}
+			queue[pos] = a;
+		}
+		
+		function index(e){
+			return queue.indexOf(e);
+		}
+		
+		var self = {};
+		self.moveTo = moveTo;
+		self.index = index;
+		return self;
 	}
 	
-	function moveTo(a, pos){
-		var cpos = queue.indexOf(a);
-		var beforePos = cpos > pos;
-		if(beforePos){
-			for(var i=cpos; i>pos; i--){
-				queue[i] = queue[i-1];
-			}
-		}else{
-			for(var i=cpos; i < pos; i++){
-				queue[i] = queue[i+1];
-			}
-		}
-		queue[pos] = a;
-	}
 	
 	function dragestartListener(e){
 		var tar = $(e.target);
 		var id = tar.attr('uid');
 		tar.addClass('drag');
-		info = {tar: tar, id: id, order: queue.indexOf(id)};
+		info = {tar: tar, id: id, order: orderq.index(id)};
 	}
 	
 	function dragendListener(e){
@@ -41,7 +51,8 @@ $(function(){
 		var overTar = $(e.target);
 		var overId = overTar.attr('uid');
 		if(overId == info.id) return;
-		var ovorder = queue.indexOf(overId);
+		
+		var ovorder = orderq.index(overId);
 		var isUp = info.order > ovorder;
 		if(isUp){
 			overTar.before(info.tar);
@@ -49,7 +60,7 @@ $(function(){
 			overTar.after(info.tar);
 		}
 		info.order = ovorder;
-		moveTo(info.id, ovorder);
+		orderq.moveTo(info.id, ovorder);
 	}
 	
 	function dragListener(e){
@@ -67,7 +78,7 @@ $(function(){
 	}
 	
 	function init(){
-		initQueue();
+		orderq = initQueue();
 		bindDraggable();
 	}
 	
