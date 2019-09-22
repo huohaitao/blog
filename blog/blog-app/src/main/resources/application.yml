@@ -1,0 +1,48 @@
+server:
+  port: 80
+  servlet:
+    context-path: /
+
+spring:
+  resources:
+    static-locations: /static/
+  mvc:
+    static-path-pattern: /static/**
+  thymeleaf:
+    enable: true
+    prefix: /WEB-INF/view/
+    cache: false
+  devtools: 
+    restart: 
+      enabled: true
+      additional-paths: src/main/java
+      exclude: WEB-INF/**
+    
+  application:
+    name: hht-blog
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://192.168.2.102:3306/huoht?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    username: root
+    password: MyNewPass4!
+    #连接池的配置信息
+    initial-size: 2
+    min-idle: 5
+    max-active: 20
+    max-wait: 60000
+    time-between-eviction-runs-millis: 60000
+    min-evictable-idle-time-millis: 300000
+    validation-query: SELECT 1 FROM DUAL
+    test-while-idle: true
+    test-on-norrow: false
+    test-on-return: false
+    pool-prepared-statements: true
+    max-pool-prepared-statement-per-connection-size: 20
+
+mybatis:
+  mapper-locations: 'classpath*:com/hhtsoft/**/dao/*.xml'
+  configuration: 
+    map-underscore-to-camel-case: true
+    default-statement-timeout: 30
+    default-fetch-size: 100

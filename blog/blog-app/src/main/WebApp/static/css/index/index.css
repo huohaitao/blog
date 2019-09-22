@@ -1,0 +1,26 @@
+@charset "UTF-8";
+
+
+.wrap{
+	width: 60%;
+	margin: 100px auto;
+	background-color: #e3e0df;
+	padding: 0px 20px;
+}
+.item{
+	width: 70%;
+	height: 100px;
+	margin: 0px auto;
+	background-color: #41e9bb;
+	border: solid 1px #ffffff;
+    font-size: 80px;
+    text-align: center;
+    cursor: move;
+}
+.drag{
+    opacity: 0.5;
+}
+
+.waiting-room{
+	display: none;
+}
