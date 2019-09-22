@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhtsoft.user.dao.UserDao">
+	
+	<resultMap id="userMap" type="com.hhtsoft.user.entity.User" autoMapping="true"></resultMap>
+		
+    <select id="get" parameterType="Integer" resultMap="userMap">
+        select * from user where id = #{id}
+    </select>
+    
+    <select id="find" resultMap="userMap">
+        select * from user
+        <where>
+        	<if test="id!=null">id = #{id}</if>
+        	<if test="name!=null and name!=''"> and name like "%"#{name}"%"</if>
+        	<if test="phone!=null and phone!=''"> and phone like "%"#{phone}"%"</if>
+        	<if test="email!=null and email!=''"> and email like "%"#{email}"%"</if>
+        </where>
+    </select>
+    
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+   		insert into user(name, phone, email, create_time) values 
+		(#{name,jdbcType=VARCHAR},
+        #{phone,jdbcType=INTEGER},
+        #{email,jdbcType=VARCHAR},
+        #{createTime,jdbcType=TIME})
+   	</insert>
+    	
+   	<insert id="inserts" parameterType="java.util.List" useGeneratedKeys="true">
+		insert into user(name, phone, email, create_time) values
+		<foreach collection="list" item="item" index="index" separator=",">
+		   (#{item.name,jdbcType=VARCHAR},
+       		#{item.phone,jdbcType=INTEGER},
+       		#{item.email,jdbcType=VARCHAR},
+       		#{item.createTime,jdbcType=TIME})
+	     </foreach>
+    </insert>
+</mapper>
